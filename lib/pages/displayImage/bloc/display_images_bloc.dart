@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_imgur_app/services/api_client.dart';
+import 'package:my_imgur_app/services/api_client_imgur.dart';
 import 'package:bloc/bloc.dart';
 import 'package:my_imgur_app/services/constants.dart';
 
@@ -8,7 +8,7 @@ import 'display_image_state.dart';
 class DisplayImagesBloc extends Cubit<DisplayImagesState> {
   final ApiClientImgur imgurApiClient = ApiClientImgur();
   //pagination vars
-  int currentPage = 0; // for pagination
+  int currentPage = 0;
 
   final ScrollController scrollController = ScrollController();
 
@@ -22,36 +22,14 @@ class DisplayImagesBloc extends Cubit<DisplayImagesState> {
     scrollController.addListener(_scrollListener);
   }
 
-  // Future<void> fetchData() async {
-  //   if (state.status == DisplayImagesStatus.loading) return;
-
-  //   emit(state.copyWith(status: DisplayImagesStatus.loading));
-
-  //   // Simulate an API call or data fetching process
-  //   await Future.delayed(Duration(seconds: 2));
-
-  //   // Generate new items for the current page
-  //   List<String> newItems = List.generate(
-  //     itemsPerPage,
-  //     (index) => 'Item ${(currentPage - 1) * itemsPerPage + index + 1}',
-  //   );
-
-  //   emit(state.copyWith(
-  //     items: [...state.items, ...newItems],
-  //     status: DisplayImagesStatus.loaded,
-  //   ));
-
-  //   currentPage++;
-  // }
-
   void loadImages() async {
     if (state.status == DisplayImagesStatus.loading || !state.hasMore) return;
 
     emit(state.copyWith(status: DisplayImagesStatus.loading));
 
     try {
-      final newImages = await imgurApiClient.fetchImages(currentPage);
-      
+      final newImages = await imgurApiClient.fetchMedia(currentPage);
+
       bool hasMore = newImages.length < kPageLimit ? false : true;
 
       emit(state.copyWith(
@@ -66,6 +44,17 @@ class DisplayImagesBloc extends Cubit<DisplayImagesState> {
         error: 'Error fetching images.',
       ));
     }
+  }
+
+  void refreshImages() {
+    emit(state.copyWith(
+      status: DisplayImagesStatus.initial,
+      images: [],
+      hasMore: true,
+      error: '',
+    ));
+    currentPage = 0;
+    loadImages();
   }
 
   void _scrollListener() {

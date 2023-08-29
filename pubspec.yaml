@@ -17,6 +17,9 @@ dependencies:
   flutter_bloc: ^7.0.0
   cached_network_image: ^3.0.0
   flutter_appauth: 
+  flutter_web_auth:
+  url_launcher:
+  chewie: ^1.0.0
 
 dev_dependencies:
   flutter_test:

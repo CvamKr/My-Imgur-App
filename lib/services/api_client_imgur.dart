@@ -12,47 +12,7 @@ class ApiClientImgur {
     },
   ));
 
-  Future<Response> uploadImage2(String token, String imagePath) async {
-    final formData = FormData.fromMap({
-      'image': await MultipartFile.fromFile(imagePath, filename: 'image.png'),
-    });
-
-    final response = await _dio.post(
-      'upload',
-      data: formData,
-      options: Options(headers: {'Authorization': 'Client-ID $clientId'}),
-    );
-
-    return response;
-  }
-
-  Future<void> uploadMedia2(String mediaPath) async {
-    final formData = FormData.fromMap({
-      'image':
-          await MultipartFile.fromFile(mediaPath, filename: 'image_nature.png'),
-    });
-    debugPrint("image upload started..");
-    try {
-      final response = await _dio.post(
-        'https://api.imgur.com/3/upload',
-        data: formData,
-        options: Options(
-          headers: {'Authorization': 'Bearer $kAccessToken'},
-        ),
-      );
-
-      if (response.statusCode == 200) {
-        debugPrint('Image uploaded successfully!');
-        debugPrint('Image link: ${response.data['data']['link']}');
-      } else {
-        debugPrint('Image upload failed');
-      }
-    } catch (error) {
-      debugPrint('Error uploading image: $error');
-    }
-  }
-
-  Future<List<ImgurMediaModel>> fetchImages(int page) async {
+  Future<List<ImgurMediaModel>> fetchMedia(int page) async {
     try {
       final response = await _dio.get(
         'account/me/images?page=$page&perPage=$kPageLimit',
@@ -71,7 +31,7 @@ class ApiClientImgur {
     }
   }
 
-  Future<void> uploadMedia(
+  Future<Response> uploadMedia(
       String mediaPath, String mediaType, String description) async {
     FormData formData = FormData();
 
@@ -88,7 +48,6 @@ class ApiClientImgur {
         'description': description
       });
     }
-
     debugPrint("Media upload started..");
 
     try {
@@ -106,8 +65,11 @@ class ApiClientImgur {
       } else {
         debugPrint('Media upload failed');
       }
+      debugPrint("response: ${response.data}");
+      return response; 
     } catch (error) {
       debugPrint('Error uploading media: $error');
+      rethrow; 
     }
   }
 }

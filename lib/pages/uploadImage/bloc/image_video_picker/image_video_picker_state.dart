@@ -1,10 +1,7 @@
-import 'dart:io';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
-
 
 // States
 enum ImageVideoPickerStateEnum {
@@ -19,7 +16,7 @@ class ImageVideoPickerState extends Equatable {
   final XFile? video;
   final VideoPlayerController? videoPlayerController;
 
-  ImageVideoPickerState({
+  const ImageVideoPickerState({
     required this.state,
     this.image,
     this.video,
@@ -39,8 +36,8 @@ class ImageVideoPickerState extends Equatable {
       state: state ?? this.state,
       image: image ?? this.image,
       video: video ?? this.video,
-      videoPlayerController: videoPlayerController ?? this.videoPlayerController,
+      videoPlayerController:
+          videoPlayerController ?? this.videoPlayerController,
     );
   }
 }
-

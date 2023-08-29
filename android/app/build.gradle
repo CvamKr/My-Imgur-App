@@ -53,6 +53,9 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
+        manifestPlaceholders += [
+                        appAuthRedirectScheme: 'my_imgur_app'
+            ]
     }
 
     buildTypes {
