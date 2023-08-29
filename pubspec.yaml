@@ -1,0 +1,27 @@
+name: my_imgur_app
+description: A new Flutter project.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.0.6 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  image_picker:
+  get:
+  dio:
+  video_player: ^2.2.15
+  equatable:
+  flutter_bloc: ^7.0.0
+  cached_network_image: ^3.0.0
+  flutter_appauth: 
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
